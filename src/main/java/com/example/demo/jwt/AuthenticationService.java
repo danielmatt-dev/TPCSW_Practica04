@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
     
-    private final EmpleadoRepository userRepository;
+    private final EmpleadoRepository repository;
     
     private final PasswordEncoder passwordEncoder;
     
@@ -22,14 +22,14 @@ public class AuthenticationService {
         PasswordEncoder passwordEncoder
     ) {
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
+        this.repository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
     
     public Empleado signup(Empleado input) {
         input.setPassword(passwordEncoder.encode(input.getPassword()));
 
-        return userRepository.save(input);
+        return repository.save(input);
     }
 
     public Empleado authenticate(LoginRequest input) {
@@ -40,7 +40,7 @@ public class AuthenticationService {
                 )
         );
 
-        return userRepository.findByCorreo(input.getCorreo())
+        return repository.findByCorreo(input.getCorreo())
                 .orElseThrow();
     }
     
